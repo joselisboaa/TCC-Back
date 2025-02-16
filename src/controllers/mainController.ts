@@ -59,7 +59,7 @@ export class MainController {
         try {
             const queryResponse = await dataManager.create(req.body)
             res.status(201).send(queryResponse)
-        } catch(err) {
+        } catch(err: any) {
             let createError = new HttpsError(err.message);
             createError.cause = err.meta
             createError.statusCode = 400
@@ -89,7 +89,7 @@ export class MainController {
         try {
             const answer = await dataManager.update(req, res)
             res.send(answer)
-        } catch(err) {
+        } catch(err: any) {
             let updateError = new HttpsError(err.message);
             updateError.cause = err.meta
             updateError.statusCode = 400
@@ -106,7 +106,7 @@ export class MainController {
             const groupQuestions = await dataManager.getUserFormByUserId(user_groups);
         
             res.send(groupQuestions);
-        } catch (err) {
+        } catch (err: any) {
             let userFormError = new HttpsError(err.message);
             userFormError.cause = err.meta;
             userFormError.statusCode = 400;
@@ -123,7 +123,7 @@ export class MainController {
             const jsonData = await dataManager.sendReport(responseReport);
 
             res.render('index', { jsonData: jsonData, config: config })
-        } catch (err) {
+        } catch (err: any) {
             let reportError = new HttpsError(err.message);
             reportError.cause = err.meta;
             reportError.statusCode = 400;
