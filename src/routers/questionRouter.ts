@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { QuestionController } from "../controllers/questionController";
 import { requestBodyValidator } from "../middlewares/json/requestBodyValidator"
 import { questionSchema } from "../middlewares/json/schemas/questionSchema";
 import * as questionErrorHandler from "../middlewares/exceptions/questionErrorHandler";

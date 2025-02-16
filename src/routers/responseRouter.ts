@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { ResponseController } from "../controllers/responseController";
 import { requestBodyValidator } from "../middlewares/json/requestBodyValidator"
 import { responseSchema } from "../middlewares/json/schemas/responseSchema";
 import * as responseErrorHandler from "../middlewares/exceptions/responseErrorHandler";

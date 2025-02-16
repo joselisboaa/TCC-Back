@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { OrientationController } from "../controllers/orientationController";
 import { requestBodyValidator } from "../middlewares/json/requestBodyValidator"
 import { orientationSchema } from "../middlewares/json/schemas/orientationSchema";
 import * as orientationErrorHandler from "../middlewares/exceptions/orientationErrorHandler";

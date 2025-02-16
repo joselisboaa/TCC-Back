@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { UserGroupController } from "../controllers/userGroupController";
 import { requestBodyValidator } from "../middlewares/json/requestBodyValidator"
 import { userGroupSchema } from "../middlewares/json/schemas/userGroupSchema";
 import * as userGroupErrorHandler from "../middlewares/exceptions/userGroupErrorHandler";
