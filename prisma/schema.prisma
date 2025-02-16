@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserGroup {
+  id        Int        @id @default(autoincrement())
+  text      String     @unique
+  users     User[]
+  questions Question[]
+
+  @@map("user_group")
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  phone_number String      @unique
+  email        String      @unique
+  password     String
+  user_groups  UserGroup[]
+  responses    Response[]
+
+  @@map("user")
+}
+
+model Question {
+  id           Int        @id @default(autoincrement())
+  text         String     @unique
+  user_group   UserGroup  @relation(fields: [user_group_id], references: [id])
+  user_group_id Int
+  answers      Answer[]
+
+  @@map("question")
+}
+
+model Answer {
+  id           Int        @id @default(autoincrement())
+  text         String
+  other        Boolean
+  orientations Orientation[]
+  question     Question   @relation(fields: [question_id], references: [id])
+  question_id  Int        @unique 
+
+  @@map("answer")
+}
+
+model Orientation {
+  id        Int        @id @default(autoincrement())
+  text      String
+  value     Int
+  answer    Answer     @relation(fields: [answer_id], references: [id])
+  answer_id Int
+  responses Response[]
+
+  @@map("orientation")
+}
+
+model Response {
+  id           Int           @id @default(autoincrement())
+  timestamp    DateTime
+  orientations Orientation[]
+  user         User          @relation(fields: [user_id], references: [id])
+  user_id      Int
+
+  @@map("response")
+}

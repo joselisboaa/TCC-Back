@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- HTML INICIAL-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório</title>
+</head>
+<style>
+    body {
+        font-family: Roboto, sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Altera a centralização vertical para início */
+        min-height: 100vh;
+    }
+
+    h2, h3 {
+        font-weight: normal;
+    }
+
+    .save-as-button {
+        padding: 10px 20px;
+        background-color: #55cd5b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .save-as-button:hover {
+        background-color: #45a049;
+    }
+    .json-container {
+        text-align: center;
+        width: 100%;
+        max-width: 800px; /* Ajuste conforme necessário */
+        box-sizing: border-box;
+        background-color: #fff; /* Adicionado para melhor visualização */
+        border-radius: 5px; /* Adicionado para melhor visualização */
+    }
+
+    .orientation-section {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .orientation-section h3 {
+        text-align: center; /* Alinha o texto à esquerda */
+    }
+
+    .question-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .question-item {
+        margin: 0 auto; /* Ajusta a margem horizontal para 'auto' para centralizar */
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 600px; /* Define a largura máxima para os itens */
+        box-sizing: border-box; /* Inclui padding e border na largura total */
+    }
+
+    .form-content {
+        margin: 10px 0; /* Adiciona margem para separação */
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px; /* Adiciona bordas arredondadas */
+        box-sizing: border-box; /* Inclui padding e border na largura total */
+        text-align: left
+    }
+
+    .orientation-text {
+        margin: 10px 0; /* Adiciona margem para separação */
+        padding: 10px;
+        border-radius: 5px; /* Adiciona bordas arredondadas */
+        box-sizing: border-box; /* Inclui padding e border na largura total */
+        background-color: #f1f1f1; /* Adiciona cor de fundo */
+        text-align: left
+    }
+
+    .question-answer {
+        color: #8B928A;
+    }
+
+    .orientation-text {
+        color: #555;
+    }
+
+</style>
+<body>
+<div class="json-container">
+    <h2 id="report-title">Relatório <%= jsonData.timestamp.toLocaleString() %>
+        <button class="save-as-button" onclick="window.print()">Salvar</button>
+    </h2>
+    <div id="orientation-container">
+        <% Object.entries(jsonData.orientations).forEach(function([key, orientation]) { %>
+            <div class="orientation-section">
+                <h3>
+                    <%= key %>
+                    <% if (orientation.value < config.YELLOW_THRESHOLD) { %>
+                        <svg width="109" height="19" viewBox="0 0 109 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5.73683" width="96.8889" height="19" fill="#37EEE3"/>
+                            <ellipse cx="102.944" cy="9.5" rx="6.05556" ry="9.5" fill="#37EEE3"/>
+                            <ellipse cx="6.05556" cy="9.5" rx="6.05556" ry="9.5" fill="#37EEE3"/>
+                        </svg>
+
+                <% } else if ((orientation.value >= config.YELLOW_THRESHOLD) &&
+                            (orientation.value < config.RED_THRESHOLD)  ) { %>
+                        <svg width="78" height="19" viewBox="0 0 78 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4.10526" width="69.3333" height="19" fill="#FEF975"/>
+                            <ellipse cx="73.6667" cy="9.5" rx="4.33333" ry="9.5" fill="#FEF975"/>
+                            <ellipse cx="4.33333" cy="9.5" rx="4.33333" ry="9.5" fill="#FEF975"/>
+                        </svg>
+
+                <% } else if (orientation.value >= config.RED_THRESHOLD) { %>
+                        <svg width="41" height="19" viewBox="0 0 41 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2.15788" width="36.4444" height="19" fill="#FF5B5B"/>
+                            <ellipse cx="38.7222" cy="9.5" rx="2.27778" ry="9.5" fill="#FF5B5B"/>
+                            <ellipse cx="2.27778" cy="9.5" rx="2.27778" ry="9.5" fill="#FF5B5B"/>
+                        </svg>
+
+                    <% } %>
+                </h3>
+
+                <ul class="question-list">
+                    <% orientation.questions.forEach(function(question) { %>
+                        <li class="question-item">
+                            <div class="form-content">
+                                <div class="question-text"><%= question.text %></div>
+                                <div class="question-answer">
+                                    <!--  ICONE SVG
+                                    <img src="icon.svg" alt="Ícone de resposta" width="16" height="16" style="margin-right: 5px;">
+                                    Resposta: <%= question.answer %>
+                                    -->
+                                    <svg class="svg-icon" style="width: 1em;
+                                     height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                                         viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M196.571136 513.855488c0 174.10048 141.135872 315.236352 315.236352
+                                         315.236352 174.10048 0 315.236352-141.135872 315.236352-315.236352
+                                         0-174.102528-141.135872-315.236352-315.236352-315.236352C337.707008
+                                         198.619136 196.571136 339.755008 196.571136 513.855488L196.571136
+                                         513.855488zM511.807488 45.056C252.893184 45.056 43.008 254.941184 43.008
+                                         513.855488c0 258.90816 209.885184 468.799488 468.799488 468.799488 258.90816
+                                          0 468.799488-209.891328 468.799488-468.799488C980.609024 254.941184 770.715648
+                                           45.056 511.807488 45.056L511.807488 45.056zM511.807488 929.792c-229.71392
+                                           0-415.936512-186.222592-415.936512-415.936512 0-229.71392 186.222592-415.936512
+                                           415.936512-415.936512S927.744 284.141568 927.744 513.855488C927.744 743.569408
+                                           741.521408 929.792 511.807488 929.792L511.807488 929.792zM511.807488
+                                            929.792"/>
+                                    </svg>
+                                    <%= question.answer %>
+                                </div>
+                            </div>
+                            <div class="orientation-text">Orientação: <%= question.orientation %></div>
+                        </li>
+                    <% }); %>
+                </ul>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+</body>
+</html>
