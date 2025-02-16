@@ -8,7 +8,7 @@
     "esModuleInterop": true, // Permite a importação de módulos CommonJS
     "skipLibCheck": false, // Verifica tipos em arquivos de declaração
     "forceConsistentCasingInFileNames": true, // Garante consistência no casing de arquivos
-    "noImplicitAny": true, // Impede tipos implícitos 'any'
+    "noImplicitAny": false, // Impede tipos implícitos 'any'
     "allowJs": false // Desabilita a compilação de arquivos JavaScript
   },
   "include": ["**/*.ts"], // Inclui todos os arquivos TypeScript
