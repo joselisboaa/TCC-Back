@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2022", // Define a versão do ECMAScript
     "module": "commonjs", // Usa CommonJS para compatibilidade com Node.js
-    "rootDir": "./src", // Define a raiz do projeto
+    "rootDir": "./", // Define a raiz do projeto
     "outDir": "./dist", // Gera arquivos JavaScript na raiz
     "strict": true, // Habilita todas as verificações de tipo estritas
     "esModuleInterop": true, // Permite a importação de módulos CommonJS
