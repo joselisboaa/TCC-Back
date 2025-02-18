@@ -27,7 +27,7 @@ export class UserGroupRepository {
   }
 
   async create(data) {
-    return prisma.userGroup.create({ data: { text: data["text"], description: data["description"] } });
+    return prisma.userGroup.create({data: {text: data["text"], description: data["description"]}});
   }
 
   async update(id, text, description) {
