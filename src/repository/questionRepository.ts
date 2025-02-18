@@ -36,14 +36,16 @@ export class QuestionRepository {
       skip: queryParam["pg"] == null ? 0 : Number(queryParam["qt"]) * (Number(queryParam["pg"]) - 1),
       take: queryParam["qt"] == null ? 100 : Number(queryParam["qt"]),
       where: filter,
+      include: { user_group: true }
     });
   }
 
   async findById(id: number) {
     return prisma.question.findUnique({
       where: { id },
+      include: { user_group: true }
     });
-  }
+  } 
 
   async create(data) {
     return prisma.question.create({
