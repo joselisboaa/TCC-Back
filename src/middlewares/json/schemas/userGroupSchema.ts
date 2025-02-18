@@ -8,6 +8,12 @@ export const userGroupSchema = {
             "type": "string",
             "format": "regex",
             "pattern": "^.{1,255}$"
+        },
+        "description": {
+            "description": "group description",
+            "type": "string",
+            "format": "regex",
+            "pattern": "^.{1,255}$"
         }
     },
     required: ["text"]
