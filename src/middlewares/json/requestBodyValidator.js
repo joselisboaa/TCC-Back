@@ -13,7 +13,6 @@ const requestBodyValidator = function (schema) {
     const validate = ajv.compile(schema);
     return function (req, res, next) {
         const data = req.body;
-        console.log(req.body);
         const valid = validate(data);
         if (!valid) {
             if (validate.errors) {
