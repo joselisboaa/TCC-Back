@@ -20,7 +20,8 @@ class UserGroupService {
     async update(req, res) {
         const id = res.locals.userGroup["id"];
         const text = req.body["text"];
-        return this.repository.update(id, text);
+        const description = req.body["description"]
+        return this.repository.update(id, text, description);
     }
     async deleteById(data) {
         return this.repository.deleteById(data["id"]);
