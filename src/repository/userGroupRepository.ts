@@ -27,13 +27,13 @@ export class UserGroupRepository {
   }
 
   async create(data) {
-    return prisma.userGroup.create({ data: { text: data["text"] } });
+    return prisma.userGroup.create({ data: { text: data["text"], description: data["description"] } });
   }
 
-  async update(id, text) {
+  async update(id, text, description) {
     return prisma.userGroup.update({
       where: { id },
-      data: { text },
+      data: { text, description },
     });
   }
 
