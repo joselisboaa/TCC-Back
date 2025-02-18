@@ -18,11 +18,18 @@ class AnswerRepository {
         if (!isNaN(questionId)) {
             filter["question"] = { id: Number(questionId) };
         }
-        return prisma.answer.findMany({
+        return await prisma.answer.findMany({
             skip: queryParam["pg"] ? (Number(queryParam["qt"]) * (Number(queryParam["pg"]) - 1)) : 0,
             take: queryParam["qt"] ? Number(queryParam["qt"]) : 100,
             where: filter,
-            include: { question: true, orientations: true }
+            include: {
+              question: {
+                include: {
+                  user_group: true,
+                },
+              },
+              orientations: true,
+            },
         });
     }
     async create(data) {
