@@ -17,7 +17,18 @@ class OrientationRepository {
         const query = {
             skip: queryParam["pg"] == null ? 0 : (Number(queryParam["qt"]) * (Number(queryParam["pg"]) - 1)),
             take: queryParam["qt"] == null ? 100 : Number(queryParam["qt"]),
-            where: filter
+            where: filter,
+            include: {
+              answer: {
+                include: {
+                  question: {
+                    include: {
+                      user_group: true
+                    }
+                  }
+                }
+              }
+            },
         };
         return prisma.orientation.findMany(query);
     }
