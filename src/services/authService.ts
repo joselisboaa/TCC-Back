@@ -46,8 +46,6 @@ const generateJwtFromIdToken = async (id_token) => {
         user
     };
 
-    console.log(jwtPayload);
-
     const jwtToken = jwt.sign(jwtPayload, jwtSecret, { expiresIn: '3h' });
     return jwtToken;
 }
