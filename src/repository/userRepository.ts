@@ -21,6 +21,9 @@ export class UserRepository {
   async findByEmail(email) {
     return prisma.user.findFirst({
       where: { email },
+      include: {
+        user_groups: true
+      }
     });
   }
 
