@@ -31,17 +31,22 @@ const validateIdToken = async (id_token) => {
 }
 
 const generateJwtFromIdToken = async (id_token) => {
+    const userService = new UserService();
     const payload = await validateIdToken(id_token);
 
     if (!payload) {
-        return "token inválido.";
+        return "Token inválido.";
     }
-
+    
+    await verifyIfUserAlreadyExists(payload["email"]);
+    
+    const user = await userService.findByEmail(payload["email"]);
+    
     const jwtPayload = {
-        email: payload['email']
+        user
     };
 
-    await verifyIfUserAlreadyExists(payload["email"]);
+    console.log(jwtPayload);
 
     const jwtToken = jwt.sign(jwtPayload, jwtSecret, { expiresIn: '3h' });
     return jwtToken;
