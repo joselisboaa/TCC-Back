@@ -17,7 +17,6 @@ export const verifyUserAuth = function () {
         }
 
         jwt.verify(jwtToken, jwtSecret, (error, user) => {
-            console.log(jwtToken);
 
             if (error) {
                 return res.status(403).json({ message: "Token inválido ou expirado." });
