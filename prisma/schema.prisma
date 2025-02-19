@@ -44,10 +44,11 @@ model Answer {
   other        Boolean
   orientations Orientation[]
   question     Question   @relation(fields: [question_id], references: [id])
-  question_id  Int        @unique 
+  question_id  Int
 
   @@map("answer")
 }
+
 
 model Orientation {
   id        Int        @id @default(autoincrement())
