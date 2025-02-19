@@ -48,10 +48,10 @@ export class UserService {
         where: { user_group_id: group.id },
         include: {
           answers: {
-            include: {
-              answer: {
-                select: { id: true, text: true, other: true },
-              },
+            select: {
+              id: true,
+              text: true,
+              other: true,
             },
           },
         },
@@ -64,12 +64,12 @@ export class UserService {
         text: question.text,
         user_group_id: question.user_group_id,
         answers: question.answers.map((qoa: any) => ({
-          id: qoa.answer.id,
-          text: qoa.answer.text,
-          other: qoa.answer.other,
+          id: qoa.id,
+          text: qoa.text,
+          other: qoa.other,
         })),
       }));
-
+      
       formQuestions.push(...formattedQuestions);
     }
     
