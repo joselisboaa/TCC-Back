@@ -38,15 +38,23 @@ export const exists = function(isAttribute, isManyToMany) {
 export const verifyRepeatedData = function () {
     return async function (req, res, next) {
         const answerInstance = new AnswerService();
-        const asnwerResponse = await answerInstance.verifyUniqueProperties(req);
+        
+        let currentAnswer;
 
-        if (asnwerResponse !== null) {
-            const error = new HttpsError(`A resposta '${req.body["text"]}' já existe.`);
-            error.statusCode = 400;
-            next(error)
+        if (req.method === 'PUT' && req.params.id) {
+            const answer_id = Number(req.params.id);
+            currentAnswer = await answerInstance.findById(answer_id);
         }
 
-        next()
+        const answerResponse = await answerInstance.verifyUniqueProperties(req);
+
+        if (currentAnswer !== null && answerResponse !== null && (!currentAnswer || currentAnswer.text !== req.body.text)) {
+            const error = new HttpsError(`A resposta '${req.body["text"]}' já existe.`);
+            error.statusCode = 400;
+            next(error);
+        }
+
+        next();
     };
 }
 
