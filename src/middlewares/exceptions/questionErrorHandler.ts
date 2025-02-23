@@ -25,15 +25,23 @@ export const exists = function(isAttribute) {
 export const verifyRepeatedData = function () {
     return async function (req, res, next) {
         const questionInstance = new QuestionService();
-        const questionResponse = await questionInstance.verifyUniqueProperties(req);
+        
+        let currentQuestion;
 
-        if (questionResponse !== null) {
-            const error = new HttpsError(`A questão '${req.body["text"]}' já existe.`);
-            error.statusCode = 400;
-            next(error)
+        if (req.method === 'PUT' && req.params.id) {
+            const question_id = Number(req.params.id);
+            currentQuestion = await questionInstance.findById(question_id);
         }
 
-        next()
+        const questionResponse = await questionInstance.verifyUniqueProperties(req);
+
+        if (currentQuestion !== null && questionResponse !== null && (!currentQuestion || currentQuestion.text !== req.body.text)) {
+            const error = new HttpsError(`A questão '${req.body["text"]}' já existe.`);
+            error.statusCode = 400;
+            next(error);
+        }
+
+        next();
     };
 }
 
