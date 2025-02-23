@@ -9,6 +9,12 @@ export class UserGroupRepository {
       include: { users: true, questions: true },
     });
   }
+  
+  async verifyUniqueProperties(text) {
+    return prisma.userGroup.findFirst({
+      where: { text },
+    });
+  }
 
   async findAll(queryParam) {
     let filter = queryParam["text"]

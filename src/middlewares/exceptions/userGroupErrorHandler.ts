@@ -34,6 +34,29 @@ export const exists = function(isAttribute, isManyToMany) {
     }
 }
 
+export const verifyRepeatedData = function () {
+    return async function (req, res, next) {
+        const userGroupService = new UserGroupService();
+        
+        let currentUserGroup;
+
+        if (req.method === 'PUT' && req.params.id) {
+            const group_id = Number(req.params.id);
+            currentUserGroup = await userGroupService.findById(group_id);
+        }
+
+        const userGroupResponse = await userGroupService.verifyUniqueProperties(req);
+
+        if (currentUserGroup !== null && userGroupResponse !== null && (!currentUserGroup || currentUserGroup.name !== req.body.name)) {
+            const error = new HttpsError(`O grupo de usuários '${req.body["text"]}' já existe.`);
+            error.statusCode = 400;
+            next(error);
+        }
+
+        next();
+    };
+}
+
 export const verifyEntityDependencies = function() {
     return async function (req, res, next) {
         const userGroupService = new UserGroupService();

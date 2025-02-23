@@ -8,6 +8,10 @@ export class UserGroupService {
     return this.repository.verifyEntityDependencies(userId);
   }
 
+  async verifyUniqueProperties(req) {
+    return this.repository.verifyUniqueProperties(req.body["text"]);
+  }
+
   async findAll(req, res) {
     return this.repository.findAll(req.query);
   }

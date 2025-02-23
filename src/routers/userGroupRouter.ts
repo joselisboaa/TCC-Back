@@ -13,7 +13,8 @@ userGroupRouter.get("/",
 
 userGroupRouter.post("/",
     requestBodyValidator(userGroupSchema),
-    MainController.create
+    userGroupErrorHandler.verifyRepeatedData(),
+    MainController.create,
 )
 
 userGroupRouter.get("/:id",
@@ -30,5 +31,6 @@ userGroupRouter.delete("/:id",
 userGroupRouter.put("/:id",
     requestBodyValidator(userGroupSchema),
     userGroupErrorHandler.exists(false, false),
-    MainController.update
+    userGroupErrorHandler.verifyRepeatedData(),
+    MainController.update,
 )
