@@ -25,29 +25,46 @@ export const exists = function(isAttribute) {
 export const verifyRepeatedData = function () {
     return async function (req, res, next) {
         const userInstance = new UserService();
+        
+        let currentUser;
+
+        if (req.method === 'PUT' && req.params.id) {
+            const user_id = Number(req.params.id);
+            currentUser = await userInstance.findById(user_id);
+        }
+
         const userResponse = await userInstance.verifyUniqueProperties(req);
         const reqEmailExists = userResponse !== null && userResponse["email"] === req.body["email"];
         const reqPhoneExists = userResponse !== null && userResponse["phone_number"] === req.body["phone_number"];
 
-        if (reqPhoneExists && !reqEmailExists) {
-            const error = new HttpsError(`O telefone '${req.body["phone_number"]}' já foi cadastrado.`);
+        const throwError = (message: string) => {
+            const error = new HttpsError(message);
             error.statusCode = 400;
-            next(error)
+            return next(error);
+        };
+
+        if (currentUser && reqEmailExists && currentUser.email !== req.body["email"]) {
+            return throwError(`O email '${req.body["email"]}' já foi cadastrado.`);
         }
 
-        if (reqEmailExists && !reqPhoneExists) {
-            const error = new HttpsError(`O email '${req.body["email"]}' já foi cadastrado.`);
-            error.statusCode = 400;
-            next(error)
+        if (currentUser && reqPhoneExists && currentUser.phone_number !== req.body["phone_number"]) {
+            return throwError(`O telefone '${req.body["phone_number"]}' já foi cadastrado.`);
+        }
+        
+        if (!currentUser && reqEmailExists && !reqPhoneExists) {
+            return throwError(`O email '${req.body["email"]}' já foi cadastrado.`);
         }
 
-        if (reqEmailExists && reqPhoneExists) {
-            const error = new HttpsError(`O email e telefone inseridos já foram cadastrados.`);
-            error.statusCode = 400;
-            next(error)
+        if (!currentUser && reqPhoneExists && !reqEmailExists) {
+            return throwError(`O telefone '${req.body["phone_number"]}' já foi cadastrado.`);
         }
 
-        next()
+        if (!currentUser && reqEmailExists && reqPhoneExists) {
+            return throwError(`O email e telefone inseridos já foram cadastrados.`);
+        }
+    
+
+        next();
     };
 }
 
