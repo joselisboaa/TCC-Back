@@ -50,24 +50,28 @@ model Answer {
   @@map("answer")
 }
 
-
-model Orientation {
-  id        Int        @id @default(autoincrement())
-  text      String
-  value     Int
-  answer    Answer     @relation(fields: [answer_id], references: [id])
-  answer_id Int
-  responses Response[]
-
-  @@map("orientation")
+model Response {
+  id         Int                     @id @default(autoincrement())
+  timestamp  DateTime                @default(now())
+  user_id    Int
+  user       User                    @relation(fields: [user_id], references: [id])
+  responseOrientations ResponseOrientation[]
 }
 
-model Response {
-  id           Int           @id @default(autoincrement())
-  timestamp    DateTime
-  orientations Orientation[]
-  user         User          @relation(fields: [user_id], references: [id])
-  user_id      Int
+model Orientation {
+  id        Int                     @id @default(autoincrement())
+  text      String
+  value     Int
+  answer_id Int
+  answer    Answer                  @relation(fields: [answer_id], references: [id])
+  responseOrientations ResponseOrientation[]
+}
 
-  @@map("response")
+model ResponseOrientation {
+  response_id   Int
+  orientation_id Int
+  response      Response    @relation(fields: [response_id], references: [id])
+  orientation   Orientation @relation(fields: [orientation_id], references: [id])
+
+  @@id([response_id, orientation_id])
 }
