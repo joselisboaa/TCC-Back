@@ -64,6 +64,7 @@ export class UserRepository {
         user_groups: { connect: userData["user_groups"] },
         email: userData["email"],
         password: userData["password"],
+        name: userData["name"],
       },
     });
   }
@@ -76,6 +77,7 @@ export class UserRepository {
         user_groups: { set: userData["user_groups"].map(({ id }) => ({ id })) },
         email: userData["email"],
         password: userData["password"],
+        name: userData["name"],
       },
     });
   }
