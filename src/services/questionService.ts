@@ -4,7 +4,7 @@ export class QuestionService {
   private repository = new QuestionRepository();
 
   async verifyEntityDependencies(req, res) {
-    return this.repository.verifyEntityDependencies(req.params["text"]);
+    return this.repository.verifyEntityDependencies(req.params["id"]);
   }
 
   async verifyUniqueProperties(req) {

@@ -3,9 +3,9 @@ import { PrismaClient, Question } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export class QuestionRepository {
-  async verifyEntityDependencies(questionText: string): Promise<Question | null> {
+  async verifyEntityDependencies(questionId: number): Promise<Question | null> {
     return prisma.question.findFirst({
-      where: { text: questionText },
+      where: { id: Number(questionId) },
       include: { answers: true },
     });
   }
