@@ -22,6 +22,10 @@ export const post = {
             "type": "string",
             "format": "email"
         },
+        "name": {
+            "description": "User's name. Does not have a regex.",
+            "type": "string"
+        },
         "password": {
             "description": "User's password. Does have a regex.",
             "type": "string",
@@ -55,6 +59,10 @@ export const put = {
             "description": "User's email. Does have a regex.",
             "type": "string",
             "format": "email"
+        },
+        "name": {
+            "description": "User's name. Does not have a regex.",
+            "type": "string"
         },
         "password": {
             "description": "User's password. Does have a regex.",
