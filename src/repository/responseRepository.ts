@@ -20,7 +20,21 @@ export class ResponseRepository {
       skip: queryParam["pg"] == null ? 0 : Number(queryParam["qt"]) * (Number(queryParam["pg"]) - 1),
       take: queryParam["qt"] == null ? 100 : Number(queryParam["qt"]),
       where: filter,
-      include: { orientations: true },
+      include: { 
+        orientations: true, 
+        user: {
+          select: {
+            phone_number: true,
+            email: true,
+            name: true,
+            user_groups: {
+              select: {
+                text: true
+              }
+            },
+          }
+        }
+      },
     });
   }
 
