@@ -21,6 +21,7 @@ model User {
   id           Int         @id @default(autoincrement())
   phone_number String      @unique
   email        String      @unique
+  name         String?
   password     String
   user_groups  UserGroup[]
   responses    Response[]
