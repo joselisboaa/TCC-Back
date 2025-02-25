@@ -13,7 +13,7 @@ export const userGroupSchema = {
             "description": "group description",
             "type": "string",
             "format": "regex",
-            "pattern": "^.{1,255}$"
+            "pattern": "^.{0,255}$"
         }
     },
     required: ["text"]
