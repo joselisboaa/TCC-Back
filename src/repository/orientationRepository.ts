@@ -37,7 +37,10 @@ export class OrientationRepository {
 
   async findById(id) {
     return prisma.orientation.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        answer: true
+      }
     });
   }
 
