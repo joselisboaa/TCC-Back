@@ -21,7 +21,19 @@ export class ResponseRepository {
       take: queryParam["qt"] == null ? 100 : Number(queryParam["qt"]),
       where: filter,
       include: { 
-        orientations: true, 
+        responseOrientations: {
+          include: {
+            orientation: {
+              include: {
+                answer: {
+                  include: {
+                    question: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         user: {
           select: {
             phone_number: true,
@@ -35,43 +47,74 @@ export class ResponseRepository {
           }
         }
       },
-    });
+    });    
   }
 
   async findById(id) {
     return prisma.response.findUnique({
       where: { id },
-      include: { orientations: true },
-    });
-  }
+      include: {
+        user: true,
+        responseOrientations: {
+          include: { orientation: true }
+        }
+      },
+    });    
+  }  
 
   async create(data) {
-    return prisma.response.create({
+    const response = await prisma.response.create({
       data: {
         timestamp: new Date(),
-        orientations: { connect: data["orientations"] },
         user_id: data["user_id"],
       },
     });
+  
+    if (data["orientations"]?.length) {
+      for (const orientation of data["orientations"]) {
+        await prisma.responseOrientation.create({
+          data: {
+            response_id: response.id,
+            orientation_id: Number(orientation.id),
+          },
+        });
+      }
+    }
+  
+    return response;
   }
 
   async update(data) {
+    await prisma.responseOrientation.deleteMany({
+      where: { response_id: data["id"] },
+    });
+  
+    if (data["orientations"]?.length) {
+      for (const orientation of data["orientations"]) {
+        await prisma.responseOrientation.create({
+          data: {
+            response_id: data["id"],
+            orientation_id: Number(orientation.id),
+          },
+        });
+      }
+    }
+  
     return prisma.response.update({
       where: { id: data["id"] },
       data: {
         timestamp: new Date(),
-        orientations: { set: data["orientations"].map(({ id }) => ({ id })) },
         user_id: data["user_id"],
       },
     });
   }
+  
 
   async deleteById(id) {
-    await prisma.response.update({
-      where: { id },
-      data: { orientations: { set: [] } },
+    await prisma.responseOrientation.deleteMany({
+      where: { response_id: id },
     });
-
+  
     return prisma.response.delete({ where: { id } });
-  }
+  }  
 }
